@@ -10,13 +10,20 @@ var options = {
 };
 
 // Create a service (the app object is just a callback).
-var app = express();
+var not_secure = express();
 
 // Create an HTTP service.
-http.createServer(app).listen(80);
+http.createServer(not_secure).listen(80);
+
+// set up a route to redirect http to https
+not_secure.get('*', function(req, res) {  
+	res.redirect('https://' + req.headers.host + req.url);
+})
+
 // Create an HTTPS service identical to the HTTP service.
+var app = express();
 https.createServer(options, app).listen(443);
 
 app.get('/', function (req, res) {
-  res.json({message: 'Welcome to Athemath!'});
+	res.json({message: 'Welcome to Athemath!'});
 });
