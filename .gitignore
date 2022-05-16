@@ -4,3 +4,12 @@ node_modules/
 package-lock.json
 .node_repl_history
 .npm/
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.config/
+.gitconfig
+.lesshst
+.ssh/
+.vim/
