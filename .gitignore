@@ -1,7 +1,6 @@
 certs/
 .viminfo
 node_modules/
-package-lock.json
 .node_repl_history
 .npm/
 .bash_history
@@ -13,3 +12,4 @@ package-lock.json
 .lesshst
 .ssh/
 .vim/
+dist/
