@@ -22,7 +22,7 @@ not_secure.get('*', function(req, res) {
 
 // Create an HTTPS service identical to the HTTP service.
 var app = express();
-https.createServer(options, app).listen(443);
+https.createServer(options, app).listen(3000);
 
 app.get('/', function (req, res) {
 	res.json({message: 'Welcome to Athemath!'});
