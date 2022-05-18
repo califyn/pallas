@@ -1,3 +1,4 @@
+const fs = require('fs');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const UserModel = require('../model/model');
@@ -53,10 +54,12 @@ passport.use(
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
+const login_secret = fs.readFileSync('../secrets/login_secret.txt', 'utf8');
+
 passport.use(
   new JWTstrategy(
     {
-      secretOrKey: 'TOP_SECRET',
+      secretOrKey: login_secret,
       jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
     },
     async (token, done) => {

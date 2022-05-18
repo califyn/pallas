@@ -1,8 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const router = express.Router();
+
+const login_secret = fs.readFileSync('../secrets/login_secret.txt', 'utf8');
 
 router.post(
   '/signup',
@@ -35,7 +38,7 @@ router.post(
               if (error) return next(error);
 
               const body = { _id: user._id, username: user.username };
-              const token = jwt.sign({ user: body }, 'TOP_SECRET');
+              const token = jwt.sign({ user: body }, login_secret);
 
               return res.json({ token });
             }
