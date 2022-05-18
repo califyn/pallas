@@ -6,7 +6,7 @@ module.exports = env => {
     mode: env.development ? 'development' : 'production',
     entry: './index.js',
     output: {
-      filename: 'bundle.js',
+      filename: "[name].js"
     },
     devServer: {
       host: 'pallas.athemath.org',
@@ -25,6 +25,7 @@ module.exports = env => {
         }
       }
     },
+    devtool: 'eval-source-map',
     module: {
       rules: [
         {

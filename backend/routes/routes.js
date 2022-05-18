@@ -21,6 +21,7 @@ router.post(
 router.post(
   '/login',
   async (req, res, next) => {
+    console.log('login attempt');
     passport.authenticate(
       'login',
       async (err, user, info) => {
@@ -44,6 +45,7 @@ router.post(
             }
           );
         } catch (error) {
+          console.log('error');
           return next(error);
         }
       }
