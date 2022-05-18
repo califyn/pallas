@@ -14,8 +14,8 @@ module.exports = env => {
       server: {
         type: 'https',
         options: {
-          key: fs.readFileSync('./certs/privkey.pem'),
-          cert: fs.readFileSync('./certs/fullchain.pem')
+          key: fs.readFileSync('./secrets/privkey.pem'),
+          cert: fs.readFileSync('./secrets/fullchain.pem')
         }
       },
       proxy: {

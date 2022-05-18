@@ -1,4 +1,4 @@
-certs/
+secrets/
 .viminfo
 node_modules/
 .node_repl_history
