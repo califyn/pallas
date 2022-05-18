@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "react-start": "webpack-dev-server --env development --host 72.167.44.22",
+    "react-start": "webpack-dev-server --env development --progress",
     "react-build": "webpack --env production"
   },
   "repository": {
@@ -20,9 +20,14 @@
   "homepage": "https://github.com/califynic/pallas#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "react": "^18.1.0"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.12",
+    "@babel/preset-env": "^7.17.12",
+    "@babel/preset-react": "^7.17.12",
+    "babel-loader": "^8.2.5",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.0"
