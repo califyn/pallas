@@ -17,6 +17,12 @@ module.exports = env => {
           key: fs.readFileSync('./certs/privkey.pem'),
           cert: fs.readFileSync('./certs/fullchain.pem')
         }
+      },
+      proxy: {
+        '/api': {
+          target: 'https://pallas.athemath.org:3000',
+          pathRewrite: { '^/api': '' },
+        }
       }
     },
     module: {

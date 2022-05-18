@@ -9,6 +9,7 @@ var options = {
 	cert: fs.readFileSync('certs/fullchain.pem')
 };
 
+/* This is all unnecessary because it (should) be now handled by webpack instead (TODO).
 // Create a service (the app object is just a callback).
 var not_secure = express();
 
@@ -19,11 +20,15 @@ http.createServer(not_secure).listen(80);
 not_secure.get('*', function(req, res) {  
 	res.redirect('https://' + req.headers.host + req.url);
 })
+*/
 
 // Create an HTTPS service identical to the HTTP service.
 var app = express();
 https.createServer(options, app).listen(3000);
 
+var count = 0;
+
 app.get('/', function (req, res) {
-	res.json({message: 'Welcome to Athemath!'});
+	count++;
+	res.json({num: count});
 });
