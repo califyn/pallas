@@ -3,10 +3,15 @@ import { createRoot } from 'react-dom/client';
 
 require("regenerator-runtime/runtime");
 
-import Login from './components/login.js'
+import LoginWrapper from './components/login.js'
+import Profile from './components/profile.js'
 
 function App() {
-	return <div><Login /></div>
+    return (
+        <LoginWrapper>
+            <Profile />
+        </LoginWrapper>
+    );
 }
 
 const container = document.getElementById('app');

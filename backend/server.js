@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 
-const UserModel = require('./model/model');
+const UserModel = require('./model/user-model');
 
 mongoose.connect("mongodb://127.0.0.1:27017/passport-jwt", {
   useNewUrlParser: true,
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', routes);
 
 // Plug in the JWT strategy as a middleware so only verified users can access this route.
-app.use('/user', passport.authenticate('jwt', { session: false }), secureRoute);
+app.use('/priv', passport.authenticate('jwt', { session: false }), secureRoute);
 
 // Handle errors.
 app.use(function(err, req, res, next) {
