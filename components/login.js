@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 let checkLoginFunc = null;
 
@@ -79,8 +80,16 @@ export default function LoginWrapper({ children }) {
 
 	return (
 		<>
+            
             {incorrectLogin && <p>Username or password is incorrect</p>}
-            {loggedIn ? React.cloneElement(children, { checkLogin: checkLogin }) : (
+            {loggedIn ? ( 
+                    <>
+                        <nav>
+                            <Link to="">Dashboard</Link>
+                        </nav>
+                        { React.cloneElement(children, { checklogin: checkLogin }) }
+                    </> 
+                ) : (
                 <form onSubmit={event => login(event)}>
                     <label htmlFor="username-field">Username:</label>
                     <input type="text" id="username-field" name="login-field" />
