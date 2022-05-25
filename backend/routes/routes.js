@@ -42,7 +42,7 @@ router.post(
               if (error) return next(error);
 
               const body = { _id: user._id, username: user.username };
-              const token = jwt.sign({ user: body }, login_secret);
+              const token = jwt.sign({ user: body }, login_secret, { expiresIn: "24h" });
 
               return res.json({ token });
             }
