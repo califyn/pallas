@@ -1,12 +1,29 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 const fs = require('fs');
 const path = require('path');
 
 module.exports = env => {
-  return {
-    mode: env.development ? 'development' : 'production',
+  const dev = {
+    mode: 'development',
+    devtool: 'eval-source-map'
+  }
+
+  const prod = {
+    mode: 'production',
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: "public/index.html"
+      })
+    ]
+  }
+
+  const both = {
     entry: './index.js',
     output: {
-      filename: "[name].js"
+      path: __dirname + '/dist',
+      filename: 'main.js',
+      publicPath: "/"
     },
     devServer: {
       host: 'pallas.athemath.org',
@@ -23,9 +40,9 @@ module.exports = env => {
           target: 'https://pallas.athemath.org:3000',
           pathRewrite: { '^/api': '' },
         }
-      }
+      },
+      historyApiFallback: true
     },
-    devtool: 'eval-source-map',
     module: {
       rules: [
         {
@@ -43,4 +60,6 @@ module.exports = env => {
       ],
     },
   }
+
+  return {...(env.development ? dev : prod), ...both}
 }
