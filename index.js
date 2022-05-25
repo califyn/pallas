@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 
 require("regenerator-runtime/runtime");
 
-import PrivInterface from './components/wrapper.js'
-
 import LoginWrapper from './components/login.js'
 import Profile from './components/profile.js'
 
