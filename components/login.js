@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react'
 
+let checkLoginFunc = null;
+
+export function fetchP(...args) {
+    return fetch(...args).then(res => {
+        if (res.status === 401) {
+            checkLoginFunc();
+        }
+        return res;
+    });
+}
+
 export default function LoginWrapper({ children }) {
 	const [loggedIn, setLoggedIn] = useState(false);
+    const [incorrectLogin, setIncorrectLogin] = useState(false);
 
 	async function checkLogin() {
         if (localStorage.getItem("token") === null) {
             setLoggedIn(false);
         }
 
-        console.log(localStorage.getItem("token"));
 		fetch("/api/priv/profile?" + new URLSearchParams({
 			"secret_token": localStorage.getItem("token")
 		})).then(res => {
-            console.log(res.status);
             if (res.status === 401) {
                 setLoggedIn(false);
             } else if (res.status === 200) {
@@ -20,7 +30,6 @@ export default function LoginWrapper({ children }) {
             } else {
                 throw new Error(res.status)
             };
-            console.log(loggedIn);
         });
 	}
 
@@ -40,7 +49,17 @@ export default function LoginWrapper({ children }) {
 				"username": username,
 				"password": password
 			})
-		}).then(res => res.json())
+		}).then(res => {
+            if (res.status === 500) {
+                return res.json().then(obj => { 
+                    if (obj.errorString.includes("login was incorrect")) {
+                        setIncorrectLogin(true);
+                    }
+                    throw new Error(res.status);    
+                });
+            } else { return res; }
+        })
+        .then(res => res.json())
 		.then(res => res["token"])
 		.then(token_ => {
             localStorage.setItem("token", token_);
@@ -49,11 +68,18 @@ export default function LoginWrapper({ children }) {
 	}
 
 	useEffect(() => {
+        checkLoginFunc = checkLogin;
         checkLogin();
     });
 
+    // incorrect login does not persist
+    useEffect(() => {
+        setIncorrectLogin(false);
+    }, [loggedIn]);
+
 	return (
 		<>
+            {incorrectLogin && <p>Username or password is incorrect</p>}
             {loggedIn ? React.cloneElement(children, { checkLogin: checkLogin }) : (
                 <form onSubmit={event => login(event)}>
                     <label htmlFor="username-field">Username:</label>

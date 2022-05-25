@@ -35,8 +35,9 @@ app.use('/priv', passport.authenticate('jwt', { session: false }), secureRoute);
 
 // Handle errors.
 app.use(function(err, req, res, next) {
+    console.log(err);
 	res.status(err.status || 500);
-	res.json({ error: err });
+	res.json({ error: err, errorString: err.toString() });
 });
 
 https.createServer(options, app).listen(3000, () => {

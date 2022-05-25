@@ -4,11 +4,12 @@ const router = express.Router();
 const GroupModel = require('../model/group-model');
 const fs = require('fs');
 
-const nouns = fs.readFileSync('../assets/common-nouns.txt').toString().split("\n");
+const nouns = fs.readFileSync('../secrets/common-nouns.txt').toString().split("\n");
 
 function random_noun () {
 	return nouns[Math.floor(Math.random() * nouns.length)];
 }
+
 
 router.get(
 	'/profile',
@@ -24,11 +25,15 @@ router.get(
 router.post(
 	'/create-group',
 	async (req, res, next) => {
-        const group = await GroupModel.create({users: [req.user._id], admins: [req.user._id], name: req.body.name});
-
-        res.json({
-            message: "Group created successfully",
-            group: group
+        const group = await GroupModel.create({users: [req.user._id], admins: [req.user._id], name: req.body.name}, (err) => {
+            if (err === null) {
+                res.json({
+                    message: "Group created successfully",
+                    group: group
+                });
+            } else { 
+                return next(err);
+            }
         });
 	}
 );

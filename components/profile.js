@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import LoginWrapper from './login'
+import { fetchP } from './login'
 
 export default function Profile(props) {
     const [currentUser, setCurrentUser] = useState(null);
@@ -7,10 +7,12 @@ export default function Profile(props) {
     const [userText, setUserText] = useState("");
 
     const [isAddingGroup, setIsAddingGroup] = useState(false);
+    
+    const [groupErr, setGroupErr] = useState(null);
 
     // get user
     useEffect(() => {
-        fetch("/api/priv/profile?" + new URLSearchParams({
+        fetchP("/api/priv/profile?" + new URLSearchParams({
             "secret_token": localStorage.getItem("token")
         })).then(res => res.json())
         .then(res => res.user)
@@ -21,7 +23,7 @@ export default function Profile(props) {
     });
 
     function updateGroups() {
-        fetch("/api/priv/list-groups?" + new URLSearchParams({
+        fetchP("/api/priv/list-groups?" + new URLSearchParams({
             "secret_token": localStorage.getItem("token")
         })).then(res => res.json())
         .then(res => res.groups)
@@ -39,7 +41,7 @@ export default function Profile(props) {
 		const form = e.target;
 		const group_name = form[0].value;
 
-        fetch("/api/priv/create-group", {
+        fetchP("/api/priv/create-group", {
             method: "POST",
             headers: new Headers({
                 "Authentication": localStorage.getItem("token"),
@@ -48,16 +50,25 @@ export default function Profile(props) {
             body: new URLSearchParams({
                 "name": group_name,
             })
-        }).then(res => res.json())
-        .then(res => {
-            if (res.message === "error") {
-                console.log("error: " + res.error);
-            } else {
+        }).then(res => {
+            if (res.ok) {
                 setIsAddingGroup(false);
                 updateGroups();
+            } else {
+                res.json().then(obj => {
+                    if (obj.errorString.includes("name_1 dup key:")) {
+                        setGroupErr("Group name has already been used");
+                    } else {
+                        throw new Error('group error');
+                    }
+                });
             }
         });
     }
+
+    useEffect(() => {
+        setGroupErr(null);
+    }, [isAddingGroup]);
 
     return (
         <div id="user-profile">
@@ -73,6 +84,9 @@ export default function Profile(props) {
             {
                 isAddingGroup 
                 && <form onSubmit={event => createGroup(event)}>
+                    { groupErr !== null && 
+                        <p>{groupErr}</p>
+                    }
                     <label htmlFor="groupname-field">Group name:</label>
                     <input type="text" id="groupname-field" />
                     <input type="submit" />

@@ -7,7 +7,10 @@ const Schema = mongoose.Schema;
 const GroupSchema = new Schema({
     users: [String],
     admins: [String],
-    name: [String] 
+    name: { 
+        type: String,
+        unique: true
+    }
 });
 
 const GroupModel = mongoose.model('group', GroupSchema);
