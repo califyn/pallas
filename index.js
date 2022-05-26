@@ -5,7 +5,12 @@ import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 require("regenerator-runtime/runtime");
 
 import LoginWrapper from './components/login.js'
+
 import Profile from './components/profile.js'
+import Dashboard from './components/dashboard.js'
+import Settings from './components/settings.js'
+import Wiki from './components/wiki.js'
+
 import Register from './components/register.js'
 import ResetPassword from './components/reset-password.js'
 
@@ -16,7 +21,10 @@ function App() {
                 <Route path="/register" element = { <Register /> } />
                 <Route path="/reset-password" element = { <ResetPassword /> } />
                 <Route path="/*" element={ <LoginWrapper><Outlet /></LoginWrapper> }>
-                    <Route path="" element={ <Profile /> } />
+                    <Route path="" element={ <Dashboard /> } />
+                    <Route path="profile" element={ <Profile /> } />
+                    <Route path="settings" element={ <Settings /> } />
+                    <Route path="wiki" element={ <Wiki /> } />
                 </Route>
             </Routes>
         </BrowserRouter>

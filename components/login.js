@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 let checkLoginFunc = null;
 
@@ -15,6 +15,7 @@ export function fetchP(...args) {
 export default function LoginWrapper({ children }) {
 	const [loggedIn, setLoggedIn] = useState(false);
     const [incorrectLogin, setIncorrectLogin] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
 
 	async function checkLogin() {
         if (localStorage.getItem("token") === null) {
@@ -27,7 +28,9 @@ export default function LoginWrapper({ children }) {
             if (res.status === 401) {
                 setLoggedIn(false);
             } else if (res.status === 200) {
-                setLoggedIn(true);
+                res.json().then(res => res.user)
+                    .then(user => setCurrentUser(user))
+                    .then(() => { setLoggedIn(true); });
             } else {
                 throw new Error(res.status)
             };
@@ -84,9 +87,17 @@ export default function LoginWrapper({ children }) {
             {loggedIn ? ( 
                 <>
                     <nav>
-                        <Link to="">Dashboard</Link>
+                        <p className="identifier">pallas</p>
+                        <p className="welcome">{currentUser.username}</p>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to=""><img src="icons/nav_dashboard.svg" /> dashboard</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="profile"><img src="icons/nav_profile.svg" /> profile</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="settings"><img src="icons/nav_settings.svg" /> settings</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="wiki"><img src="icons/nav_wiki.svg" /> wiki</NavLink>
+                        <Link to="" onClick={() => { localStorage.removeItem('token'); checkLogin() }} id="nav-logout"><img src="icons/nav_logout.svg" /> logout</Link>
                     </nav>
-                    { React.cloneElement(children, { checklogin: checkLogin }) }
+                    <div id="page-body">
+                        { React.cloneElement(children, { checklogin: checkLogin , user: currentUser}) }
+                    </div>
                 </> 
                 ) : (
                 <div className='loginPanel'>

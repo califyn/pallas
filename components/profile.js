@@ -72,8 +72,7 @@ export default function Profile(props) {
 
     return (
         <div id="user-profile">
-            <p>Welcome, {userText}!</p>
-            <button id="logout-button" onClick={() => { localStorage.removeItem('token'); props.checklogin() }}> Logout </button>
+            <h1>Profile</h1>
             {groups.map(group => { 
                 return (
                     <div className="group-panel" key={group.name}>

@@ -58,7 +58,12 @@ html, body { height: 100%; }
     --main-color: #a02828;
     --secondary-color: #ff9d00;
     --lite-color: #fff7f7;
+    --text-color: #111;
     --normal-size: 12pt;
+}
+
+p {
+    color: var(--text-color);
 }
 
 body {
@@ -83,18 +88,25 @@ a:hover {
 }
 
 input[type="button"], input[type="submit"], button {
-    background-color: var(--main-color);
+    background-color: #fff;
     font-family: 'lora';
     font-size: var(--normal-size);
-    color: #fff;
-    border: 0px;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
     border-radius: 4px;
-    padding: 5px 10px;
+    padding: 2px 8px;
     margin-top: 10px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover, button:hover {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    cursor: pointer;
 }
 
 input[type=text], input[type=password], input[type=email] {
     border: none;
+    border-radius: 2px;
     background-color: var(--lite-color);
     outline: none;
     padding: 5px;

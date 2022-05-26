@@ -1,0 +1,82 @@
+:root {
+    --nav-width: 180px;
+    --nav-padding: 15px;
+    --body-width: 400px;
+}
+
+nav {
+    height: 50vh;
+    margin-top: 15vh;
+    margin-bottom: 25vh;
+    padding-top: 10vh;
+    padding: var(--nav-padding);
+    width: calc(var(--nav-width) - calc(2 * var(--nav-padding)));
+    position: fixed;
+    border-right: 1px dashed #999;
+}
+
+nav .identifier {
+    font-style: italic;
+    color: var(--main-color);
+    text-align: right;
+    font-size: 20pt;
+    margin-bottom: 0;
+}
+
+nav .welcome {
+    font-weight: 600;
+    font-variant: small-caps;
+    font-size: 13pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+nav a {
+    color: var(--text-color);
+    display: block;
+    text-decoration: none;
+    padding: 2.5px 10px 4.5px 10px;
+    margin: 5px 0px 5px 0px;
+}
+
+@keyframes navlinkhover {
+    from {
+        background: linear-gradient(90deg, var(--lite-color) 0%, #fff 100%);
+    }
+    to {
+        background: linear-gradient(90deg, var(--lite-color) 100%, #fff 0%);
+    }
+}
+
+nav a:hover {
+    color: var(--text-color);
+    background: linear-gradient(90deg, var(--lite-color) 100%, #fff 0%);
+    animation-name: navlinkhover;
+    animation-duration: 0.5s;
+}
+
+nav img {
+    position: relative;
+    top: 4.5px;
+    margin-right: 4px;
+}
+
+nav .activeLink {
+    background-color: var(--lite-color);
+}
+
+nav .activeLink:hover {
+    animation-name: none;
+    cursor: default;
+}
+
+nav #nav-logout {
+    color: var(--main-color);
+    border-bottom: 0;
+}
+
+#page-body {
+    margin-left: var(--nav-width);
+    width: var(--body-width);
+}
