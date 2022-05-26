@@ -90,13 +90,15 @@ export default function LoginWrapper({ children }) {
                 </> 
                 ) : (
                 <div className='loginPanel'>
-                    {incorrectLogin && <p>Username or password is incorrect</p>}
+                    {incorrectLogin && <p className="error-text">Username or password is incorrect</p>}
+                    <p className="panelSubtitle">pallas</p>
+                    <p className="panelTitle">Login</p>
                     <form onSubmit={event => login(event)}>
-                        <label htmlFor="username-field">Username:</label>
+                        <label htmlFor="username-field">Username</label>
                         <input type="text" id="username-field" name="login-field" />
-                        <label htmlFor="password-field">Password:</label>
+                        <label htmlFor="password-field">Password</label>
                         <input type="password" id="password-field" name="password-field" />
-                        <input type="submit" />
+                        <input type="submit" value="Enter"/>
                     </form>
                     <p><Link to="/register">Register</Link></p>
                     <p><Link to="/reset-password">Forgot password?</Link></p>

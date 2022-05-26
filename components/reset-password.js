@@ -35,18 +35,20 @@ export default function ResetPassword() {
 
     return (
         <div className='loginPanel'>
+            <p className="panelSubtitle">pallas</p>
+            <p className="panelTitle">Reset password</p>
             {resetUser === null ? (
                 <>
                     {errorText !== null && <p>{errorText}</p>}
                     <form onSubmit={event => reset(event)}>
-                        <label htmlFor="username-field">Username:</label>
+                        <label htmlFor="username-field">Username</label>
                         <input type="text" id="username-field" name="login-field" />
-                        <label htmlFor="email-field">Email:</label>
+                        <label htmlFor="email-field">Email</label>
                         <input type="email" id="email-field" name="email-field" />
-                        <input type="submit" />
+                        <input type="submit" value="Reset"/>
                     </form>
                     <p>Suddenly remembered? <Link to="/">Log in</Link></p>
-                    <p>Forgot either your username or email? Contact the webmaster.</p>
+                    <p>Forgot either your username or email? <br /> Contact the webmaster.</p>
                 </>
             ) : (
                 <>

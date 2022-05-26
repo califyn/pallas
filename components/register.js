@@ -35,15 +35,17 @@ export default function Register() {
 
     return (
         <div className='loginPanel'>
+            <p className="panelSubtitle">pallas</p>
+            <p className="panelTitle">Register</p>
             {registeredUser === null ? (
                 <>
                     {errorText !== null && <p>{errorText}</p>}
                     <form onSubmit={event => register(event)}>
-                        <label htmlFor="username-field">Username:</label>
+                        <label htmlFor="username-field">Username</label>
                         <input type="text" id="username-field" name="login-field" />
-                        <label htmlFor="email-field">Email:</label>
+                        <label htmlFor="email-field">Email</label>
                         <input type="email" id="email-field" name="email-field" />
-                        <input type="submit" />
+                        <input type="submit" value="Register"/>
                     </form>
                     <p>Already have an account? <Link to="/">Log in</Link></p>
                 </>

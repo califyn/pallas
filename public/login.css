@@ -1,0 +1,34 @@
+.loginPanel {
+    margin-top: 25%;
+    padding: 10px;
+    width: 400px;
+}
+
+.loginPanel form {
+}
+
+.loginPanel .panelSubtitle {
+    font-style: italic;
+    color: var(--main-color);
+}
+
+.loginPanel .panelTitle {
+    font-weight: 500;
+    font-size: 30pt;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 5px;
+}
+
+.loginPanel input[type=text], input[type=password], input[type=email] {
+    width: 100%;
+}
+
+.loginPanel label, input {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.loginPanel label {
+}
