@@ -16,8 +16,9 @@ router.post(
     var username = req.body.username;
     var email = req.body.email;
     var password = utils.random_str(3).join("-");
+    var hash_password = await utils.hash_pw(password);
 
-    const user = await UserModel.create({ username: username, password: password, email: email });
+    const user = await UserModel.create({ username: username, password: hash_password, email: email });
 
     var msg = "Pallas account info";
     msg += "\nHere are the credentials for your newly registerd Pallas account:";
