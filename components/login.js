@@ -81,22 +81,25 @@ export default function LoginWrapper({ children }) {
 	return (
 		<>
             
-            {incorrectLogin && <p>Username or password is incorrect</p>}
             {loggedIn ? ( 
-                    <>
-                        <nav>
-                            <Link to="">Dashboard</Link>
-                        </nav>
-                        { React.cloneElement(children, { checklogin: checkLogin }) }
-                    </> 
+                <>
+                    <nav>
+                        <Link to="">Dashboard</Link>
+                    </nav>
+                    { React.cloneElement(children, { checklogin: checkLogin }) }
+                </> 
                 ) : (
-                <form onSubmit={event => login(event)}>
-                    <label htmlFor="username-field">Username:</label>
-                    <input type="text" id="username-field" name="login-field" />
-                    <label htmlFor="password-field">Password:</label>
-                    <input type="password" id="password-field" name="password-field" />
-                    <input type="submit" />
-                </form>
+                <div className='loginPanel'>
+                    {incorrectLogin && <p>Username or password is incorrect</p>}
+                    <form onSubmit={event => login(event)}>
+                        <label htmlFor="username-field">Username:</label>
+                        <input type="text" id="username-field" name="login-field" />
+                        <label htmlFor="password-field">Password:</label>
+                        <input type="password" id="password-field" name="password-field" />
+                        <input type="submit" />
+                    </form>
+                    <Link to="/register">Register</Link>
+                </div>
             )}
 		</>
 	);

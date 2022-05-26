@@ -14,3 +14,8 @@ node_modules/
 .vim/
 dist/
 .vimrc
+backend/email/messages/*.txt
+.cache/
+.local/
+**/*.swp
+**/__pycache__/

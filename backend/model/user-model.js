@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
+const fs = require('fs');
+const admin_email = fs.readFileSync('../secrets/admin_email.txt');
+
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -13,6 +16,10 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  email: {
+    type: String,
+    default: admin_email
   }
 });
 
