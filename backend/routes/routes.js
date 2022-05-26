@@ -25,13 +25,8 @@ router.post(
     msg += "\n\t Password: " + password;
     msg += "\nPlease use these credentials to log in and then you will be able to change your password in the settings panel.";
     msg += "\n\n If you were not expecting this email, please contact the webmaster (email below).";
-    var filename = utils.random_str(4).join("-") + ".txt";
-    while (fs.existsSync("email/messages/" + filename)) {
-        filename = utils.random_str(4).join("-") + ".txt";
-    }
-    fs.writeFileSync("email/messages/" + filename, msg); 
 
-    utils.mail(email, filename); 
+    utils.mail(email, msg); 
 
     res.json({
       message: 'Signup successful',
@@ -39,6 +34,39 @@ router.post(
       email: user.email
     });
   }
+);
+
+router.post(
+    '/reset-password',
+    async (req, res, next) => {
+        var user = await UserModel.findOne({username: req.body.username, email: req.body.email});
+
+        if (user === null) {
+            const error = new Error('no matching users were found');
+
+            next(error);
+        } else {
+            const password = utils.random_str(3).join("-");
+
+            var msg = "Pallas password reset";
+            msg += "\nHere are your reset login credentials:";
+            msg += "\n\t Username: " + req.body.username;
+            msg += "\n\t Password: " + password;
+            msg += "\nPlease use these credentials to log in and then you will be able to change your password in the settings panel.";
+            msg += "\n\n If you were not expecting this email, please contact the webmaster (email below).";
+
+            user.password = await utils.hash_pw(password);
+            user.save();
+
+            utils.mail(user.email, msg);
+            console.log(user.password);
+            res.json({
+                message: 'Reset successful',
+                username: user.username,
+                email: user.email
+            });
+        }
+    }
 );
 
 router.post(

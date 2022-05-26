@@ -98,7 +98,8 @@ export default function LoginWrapper({ children }) {
                         <input type="password" id="password-field" name="password-field" />
                         <input type="submit" />
                     </form>
-                    <Link to="/register">Register</Link>
+                    <p><Link to="/register">Register</Link></p>
+                    <p><Link to="/reset-password">Forgot password?</Link></p>
                 </div>
             )}
 		</>

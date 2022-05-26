@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const bcrypt = require('bcrypt');
+const utils = require('../utils.js');
 
 const Schema = mongoose.Schema;
 
@@ -27,7 +28,7 @@ UserSchema.pre(
   'save',
   async function(next) {
     const user = this;
-    const hash = await bcrypt.hash(this.password, 10);
+    const hash = utils.hash_pw(this.password);
 
     this.password = hash;
     next();

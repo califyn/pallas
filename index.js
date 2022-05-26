@@ -7,12 +7,14 @@ require("regenerator-runtime/runtime");
 import LoginWrapper from './components/login.js'
 import Profile from './components/profile.js'
 import Register from './components/register.js'
+import ResetPassword from './components/reset-password.js'
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/register" element = { <Register /> } />
+                <Route path="/reset-password" element = { <ResetPassword /> } />
                 <Route path="/*" element={ <LoginWrapper><Outlet /></LoginWrapper> }>
                     <Route path="" element={ <Profile /> } />
                 </Route>
