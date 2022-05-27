@@ -51,6 +51,20 @@ router.post(
     }
 );
 
+router.post(
+    '/change-password',
+    async (req, res, next) => {
+        var password = req.body.password;
+        
+        req.user.password = await utils.hash_pw(password);
+        req.user.save();
+
+        res.json({
+            message: 'Change password successful',
+        });
+    }
+);
+
 router.get(
 	'/user-info',
 	(req, res, next) => {

@@ -60,7 +60,6 @@ router.post(
             user.save();
 
             utils.mail(user.email, msg);
-            console.log(user.password);
             res.json({
                 message: 'Reset successful',
                 username: user.username,

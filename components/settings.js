@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { fetchP } from './login'
 
 import EmailSettings from './settings/email'
+import PasswordSettings from './settings/password'
 
 export default function Settings(props) {
     const [currentUser, setCurrentUser] = useState({username: "", email: ""});
@@ -32,7 +33,7 @@ export default function Settings(props) {
             <EmailSettings email={currentUser.email} />
 
             <h4>Password</h4>
-            <button>Change password</button>
+            <PasswordSettings />
         </div>
     );
 }
