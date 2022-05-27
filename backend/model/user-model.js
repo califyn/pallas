@@ -21,6 +21,14 @@ const UserSchema = new Schema({
   email: {
     type: String,
     default: admin_email
+  },
+  email_reset_to: {
+    type: String,
+    default: admin_email
+  },
+  email_reset_key: {
+    type: String,
+    default: ""
   }
 });
 

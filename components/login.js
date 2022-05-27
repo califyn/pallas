@@ -22,14 +22,13 @@ export default function LoginWrapper({ children }) {
             setLoggedIn(false);
         }
 
-		fetch("/api/priv/profile?" + new URLSearchParams({
+		fetch("/api/priv/user-info?" + new URLSearchParams({
 			"secret_token": localStorage.getItem("token")
 		})).then(res => {
             if (res.status === 401) {
                 setLoggedIn(false);
             } else if (res.status === 200) {
-                res.json().then(res => res.user)
-                    .then(user => setCurrentUser(user))
+                res.json().then(res => setCurrentUser(res.user))
                     .then(() => { setLoggedIn(true); });
             } else {
                 throw new Error(res.status)
@@ -96,7 +95,7 @@ export default function LoginWrapper({ children }) {
                         <Link to="" onClick={() => { localStorage.removeItem('token'); checkLogin() }} id="nav-logout"><img src="icons/nav_logout.svg" /> logout</Link>
                     </nav>
                     <div id="page-body">
-                        { React.cloneElement(children, { checklogin: checkLogin , user: currentUser}) }
+                        { children }
                     </div>
                 </> 
                 ) : (

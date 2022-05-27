@@ -1,0 +1,11 @@
+#settings .settings-field {
+    color: #666;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    display: block;
+}
+
+#settings .settings-field:hover {
+    color: var(--secondary-color);
+    cursor: default;
+}
