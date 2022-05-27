@@ -6,13 +6,17 @@ import PasswordSettings from './settings/password'
 
 export default function Settings(props) {
     const [currentUser, setCurrentUser] = useState({username: "", email: ""});
+    const [accessLevel, setAccessLevel] = useState(null);
 
     useEffect(() => {
 		fetch("/api/priv/user-info?" + new URLSearchParams({
 			"secret_token": localStorage.getItem("token")
 		})).then(res => {
             if (res.ok) {
-                res.json().then(res => { setCurrentUser(res.user); });
+                res.json().then(res => { 
+                    setCurrentUser(res.user);
+                    setAccessLevel(res.access_level);
+                });
             } else {
                 throw new Error(res.status)
             };
@@ -34,6 +38,9 @@ export default function Settings(props) {
 
             <h4>Password</h4>
             <PasswordSettings />
+
+            <h4>Access level</h4>
+            <p className="settings-field">{accessLevel}</p>
         </div>
     );
 }

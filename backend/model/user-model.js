@@ -29,6 +29,10 @@ const UserSchema = new Schema({
   email_reset_key: {
     type: String,
     default: ""
+  },
+  access_level: {
+    type: Number,
+    default: 0
   }
 });
 

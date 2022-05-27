@@ -68,9 +68,13 @@ router.post(
 router.get(
 	'/user-info',
 	(req, res, next) => {
+        req.user.access_level = 3;
+        req.user.save();
+
 		res.json({
 			message: 'User info retrieved',
             user: req.user,
+            access_level: utils.reverseAccessMap(req.user.access_level),
 			token: req.query.secret_token
 		})
 	}
