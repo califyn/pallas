@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { fetchGet } from '../login'
 import { getUser } from '../utils'
@@ -13,16 +13,22 @@ export default function GroupPane(props) {
 
     useEffect(() => {
         fetchGet("group-info", {
-            "group_id": props.group
+            "id": props.group
         }).then(res => res.json())
         .then(res => res.group)
         .then(group => setGroup(group));
     });
 
+    let navigate = useNavigate(); 
+    const routeChange = () =>{ 
+        let path = "/groups/" + group.name; 
+        navigate(path);
+    }
+
     return (
         <>
             {group.users !== undefined &&
-                <div className="group-pane-wrapper">
+                <div className="group-pane-wrapper" onClick={routeChange}>
                     <div className="group-pane">
                         <div className="gpane-name-wrapper">
                             <h2 className="gpane-name">{group.name}</h2>

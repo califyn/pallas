@@ -15,10 +15,21 @@
     margin-bottom: 10px;
 }
 
+.group-pane:hover {
+    cursor: pointer;
+    background-color: var(--secondary-lite-color);
+    border-left: 1px dashed var(--secondary-color);
+    border-right: 1px dashed var(--secondary-color);
+}
+
 .group-pane .gpane-name {
     order: 1;
     margin: 0;
     color: var(--main-color);
+}
+
+.group-pane:hover .gpane-name {
+    color: var(--secondary-color);
 }
 
 .group-pane .gpane-right {

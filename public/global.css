@@ -58,6 +58,7 @@ html, body { height: 100%; }
     --main-color: #a02828;
     --secondary-color: #ff9d00;
     --lite-color: #fff7f7;
+    --secondary-lite-color: #fffaf2;
     --text-color: #111;
     --normal-size: 12pt;
     --curve-radius: 2px;

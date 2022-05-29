@@ -73,14 +73,19 @@ router.get(
             console.log(Date.now() + req.query.word + ' query');
         }
         var ret = null;
+        var found_user;
+        if (req.query.username == undefined && req.query.id == undefined) {
+            found_user = req.user;
+        } else if (req.query.username != undefined) {
+            found_user = await UserModel.findOne({username: req.query.username}); 
+        } else if (req.query.id != undefined) {
+            found_user = await UserModel.findById(req.query.id);
+        }
+
         if (utils.accessAtLeast(req.user, 'admin')) {
-            var username = req.query.username != undefined ? req.query.username : req.user.username;
-            found_user = await UserModel.findOne({username: username}); 
             ret = found_user.toObject();
         } else if (utils.accessAtLeast(req.user, 'student') || req.query.username == undefined) {
-            var username = req.query.username != undefined ? req.query.username : req.user.username;
             ret = {}
-            found_user = await UserModel.findOne({username: username}); 
             if (utils.accessAtLeast(req.user, 'staff')) {
                 var props = ["_id", "username", "email", "access_level"];
             } else if (utils.accessAtLeast(req.user, 'student')) {
@@ -180,8 +185,13 @@ router.get(
         if (utils.accessLessThan(req.user, "student")) {
             utils.authBad(res);
         } else {
-            const group = await GroupModel.findById(req.query.group_id);
             var ret = null;
+            var group;
+            if (req.query.name != undefined) {
+                group = await GroupModel.findOne({name: req.query.name}); 
+            } else if (req.query.id != undefined) {
+                group = await GroupModel.findById(req.query.id);
+            }
 
             if (utils.GaccessAtLeast(group, req.user, "admin")) {
                 ret = group.toObject();
