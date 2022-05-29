@@ -7,6 +7,7 @@ require("regenerator-runtime/runtime");
 import LoginWrapper from './components/login.js'
 
 import Profile from './components/profile.js'
+import AllGroups from './components/group/allgroups.js'
 import Dashboard from './components/dashboard.js'
 import Settings from './components/settings.js'
 import Wiki from './components/wiki.js'
@@ -36,6 +37,7 @@ function App() {
                     <Route path="profile" element={ <Profile /> }>
                         <Route path=":user" element={ <Profile /> } />
                     </Route>
+                    <Route path="groups" element={ <AllGroups /> } />
                     <Route path="settings" element={ <Settings /> } />
                     <Route path="wiki" element={ <Wiki /> } />
                     <Route path="*" element={ <PageNotFound /> } />

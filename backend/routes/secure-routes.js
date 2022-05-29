@@ -154,6 +154,27 @@ router.get(
 )
 
 router.get(
+	'/all-groups',
+	async (req, res, next) => {
+        if (utils.accessLessThan(req.user, "student")) {
+            utils.authBad(res);
+        } else {
+            var groups = undefined;
+            groups = await GroupModel.find({});
+            if (groups === undefined) {
+                groups = [];
+            }
+
+            res.json({
+                message: "Groups found",
+                groups: groups.map(g => g._id),
+                token: req.query.secret_token
+            })
+        }
+	}
+)
+
+router.get(
     '/group-info',
     async (req, res, next) => {
         if (utils.accessLessThan(req.user, "student")) {
