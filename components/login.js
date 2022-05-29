@@ -12,6 +12,24 @@ export function fetchP(...args) {
     });
 }
 
+export function fetchPost(url, obj) {
+    return fetchP("/api/priv" + url, {
+        method: "POST",
+        headers: new Headers({
+            "Authentication": localStorage.getItem("token"),
+            "Content-type": "application/x-www-form-urlencoded",
+        }),
+        body: new URLSearchParams(obj)
+    });
+}
+
+export function fetchGet(url, obj) {
+    return fetchP("/api/priv/" + url + "?" + new URLSearchParams({
+        ...obj,
+        ...{"secret_token": localStorage.getItem("token")}
+    }));
+}
+
 export default function LoginWrapper({ children }) {
 	const [loggedIn, setLoggedIn] = useState(false);
     const [incorrectLogin, setIncorrectLogin] = useState(false);
@@ -88,11 +106,11 @@ export default function LoginWrapper({ children }) {
                     <nav>
                         <p className="identifier">pallas</p>
                         <p className="welcome">{currentUser.username}</p>
-                        <NavLink className={({ isActive }) => isActive && "activeLink" } to=""><img src="icons/nav_dashboard.svg" /> dashboard</NavLink>
-                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="profile"><img src="icons/nav_profile.svg" /> profile</NavLink>
-                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="settings"><img src="icons/nav_settings.svg" /> settings</NavLink>
-                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="wiki"><img src="icons/nav_wiki.svg" /> wiki</NavLink>
-                        <Link to="" onClick={() => { localStorage.removeItem('token'); checkLogin() }} id="nav-logout"><img src="icons/nav_logout.svg" /> logout</Link>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to=""><img src="/icons/nav_dashboard.svg" /> dashboard</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="profile"><img src="/icons/nav_profile.svg" /> profile</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="settings"><img src="/icons/nav_settings.svg" /> settings</NavLink>
+                        <NavLink className={({ isActive }) => isActive && "activeLink" } to="wiki"><img src="/icons/nav_wiki.svg" /> wiki</NavLink>
+                        <Link to="" onClick={() => { localStorage.removeItem('token'); checkLogin() }} id="nav-logout"><img src="/icons/nav_logout.svg" /> logout</Link>
                     </nav>
                     <div id="page-body">
                         { children }

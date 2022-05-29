@@ -60,6 +60,8 @@ html, body { height: 100%; }
     --lite-color: #fff7f7;
     --text-color: #111;
     --normal-size: 12pt;
+    --curve-radius: 2px;
+    --big-curve-radius: 8px;
 }
 
 p {
@@ -93,7 +95,7 @@ input[type="button"], input[type="submit"], button {
     font-size: var(--normal-size);
     color: var(--main-color);
     border: 1px solid var(--main-color);
-    border-radius: 4px;
+    border-radius: var(--curve-radius);
     padding: 2px 8px;
     margin-top: 5px;
 }
@@ -106,8 +108,15 @@ input[type="button"]:hover, input[type="submit"]:hover, button:hover {
 
 input[type=text], input[type=password], input[type=email] {
     border: none;
-    border-radius: 2px;
+    border-radius: var(--curve-radius);
     background-color: var(--lite-color);
     outline: none;
     padding: 5px;
+}
+
+.floatparent::after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const UserModel = require('../model/user-model');
 const GroupModel = require('../model/group-model');
 const fs = require('fs');
 
@@ -67,11 +68,39 @@ router.post(
 
 router.get(
 	'/user-info',
-	(req, res, next) => {
+	async (req, res, next) => {
+        if (req.query.word !== undefined) {
+            console.log(Date.now() + req.query.word + ' query');
+        }
+        var ret = null;
+        if (utils.accessAtLeast(req.user, 'admin')) {
+            var username = req.query.username != undefined ? req.query.username : req.user.username;
+            found_user = await UserModel.findOne({username: username}); 
+            ret = found_user.toObject();
+        } else if (utils.accessAtLeast(req.user, 'student') || req.query.username == undefined) {
+            var username = req.query.username != undefined ? req.query.username : req.user.username;
+            ret = {}
+            found_user = await UserModel.findOne({username: username}); 
+            if (utils.accessAtLeast(req.user, 'staff')) {
+                var props = ["_id", "username", "email", "access_level"];
+            } else if (utils.accessAtLeast(req.user, 'student')) {
+                var props = ["_id", "username", "email"];
+            } else if (req.query.username == undefined) {
+                var props = ["_id", "username", "email"];
+            }
+            if (username == req.user.username) {
+                props = [...new Set(props.concat(["_id", "username", "email"]))]; 
+            }
+            for (var i = 0; i < props.length; i++) {
+                ret[props[i]] = found_user[props[i]];
+            }
+        }
+        if (ret != null && ret.access_level !== undefined) {
+            ret.access_level = utils.reverseAccessMap(ret.access_level);
+        }
 		res.json({
 			message: 'User info retrieved',
-            user: req.user,
-            access_level: utils.reverseAccessMap(req.user.access_level),
+            user: ret,
 			token: req.query.secret_token
 		})
 	}
@@ -80,41 +109,80 @@ router.get(
 router.post(
 	'/create-group',
 	async (req, res, next) => {
-        const group = await GroupModel.create({users: [req.user._id], admins: [req.user._id], name: req.body.name}, (err) => {
-            if (err === null) {
-                res.json({
-                    message: "Group created successfully",
-                    group: group
-                });
-            } else { 
-                return next(err);
-            }
-        });
+        if (utils.accessLessThan(req.user, "student")) {
+            utils.authBad(res);
+        } else {
+            const group = await GroupModel.create({users: [req.user._id], admins: [req.user._id], name: req.body.name}, (err) => {
+                if (err === null) {
+                    res.json({
+                        message: "Group created successfully",
+                        group: group
+                    });
+                } else { 
+                    return next(err);
+                }
+            });
+        }
 	}
 );
 
 router.get(
 	'/list-groups',
 	async (req, res, next) => {
-        const groups = await GroupModel.find({users: req.user._id});
-        
-        res.json({
-            message: "Groups found",
-            groups: groups,
-            token: req.query.secret_token
-        })
+        if (utils.accessLessThan(req.user, "student")) {
+            utils.authBad(res);
+        } else {
+            var groups = undefined;
+            if (req.query.username == "undefined" || req.query.username == "null") {
+                groups = await GroupModel.find({users: req.user._id});
+            } else {
+                const selected_user = await UserModel.findOne({username: req.query.username });
+                groups = await GroupModel.find({users: selected_user._id});
+            }
+            if (groups === undefined) {
+                groups = [];
+            }
+
+            res.json({
+                message: "Groups found",
+                groups: groups.map(g => g._id),
+                can_add_group: utils.accessAtLeast(req.user, "student"),
+                token: req.query.secret_token
+            })
+        }
 	}
 )
 
 router.get(
     '/group-info',
     async (req, res, next) => {
-        const group = await GroupModel.findById(req.query.group_id);
+        if (utils.accessLessThan(req.user, "student")) {
+            utils.authBad(res);
+        } else {
+            const group = await GroupModel.findById(req.query.group_id);
+            var ret = null;
 
-        res.json({
-            message: "found group",
-            group: group
-        });
+            if (utils.GaccessAtLeast(group, req.user, "admin")) {
+                ret = group.toObject();
+            } else {
+                ret = {};
+                
+                if (utils.GaccessAtLeast(group, req.user, "member")) {
+                    var props = ["users", "admins", "name"];
+                } else {
+                    var props = ["users", "admins", "name"];
+                }
+                
+                for (var i = 0; i < props.length; i++) {
+                    ret[props[i]] = group[props[i]];
+                }
+            } 
+
+            res.json({
+                message: "found group",
+                group: ret
+            });
+        }
     }
 );
 

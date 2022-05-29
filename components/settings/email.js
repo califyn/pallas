@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { fetchP } from '../login'
+import { getUser } from '../utils'
 
 export default function EmailSettings(props) {
+    const [currentUser, setCurrentUser] = useState({username: null, email: null});
+
     const [formState, setFormState] = useState('default');
     const [errorText, setErrorText] = useState(null);
+
+    useEffect(() => { getUser(setCurrentUser) }, [location, formState]);
 
     async function genEmailKey(e) {
         e.preventDefault();
@@ -64,7 +69,7 @@ export default function EmailSettings(props) {
                     case 'default':
                         return (
                             <>
-                                <p className="settings-field">{props.email}</p>
+                                <p className="settings-field">{currentUser.email}</p>
                                 <button onClick={() => setFormState('enter-email')}>Change email</button>
                             </>
                         );

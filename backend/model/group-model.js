@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 const GroupSchema = new Schema({
-    users: [String],
-    admins: [String],
+    users: [{ type: String }],
+    admins: [{ type: String }],
     name: { 
         type: String,
         unique: true

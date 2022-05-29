@@ -1,99 +1,56 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom";
+
 import { fetchP } from './login'
+import { getUser } from './utils'
+
+import ProfileGroups from './profile/groups'
 
 export default function Profile(props) {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [groups, setGroups] = useState([]);
-    const [userText, setUserText] = useState("");
+    let params = useParams();
+    const [currentUser, setCurrentUser] = useState({username: null, email: null});
+    const [selectedUser, setSelectedUser] = useState({});
 
-    const [isAddingGroup, setIsAddingGroup] = useState(false);
-    
-    const [groupErr, setGroupErr] = useState(null);
+    useEffect(() => { getUser(setCurrentUser) }, [location]);
 
-    // get user
     useEffect(() => {
-        fetchP("/api/priv/profile?" + new URLSearchParams({
-            "secret_token": localStorage.getItem("token")
-        })).then(res => res.json())
-        .then(res => res.user)
-        .then(user => {
-            setCurrentUser(user);
-            setUserText(user.username);
-        });
+        if (params.user !== undefined) {
+            fetchP("/api/priv/user-info?" + new URLSearchParams({
+                "secret_token": localStorage.getItem("token"),
+                "username": params.user
+            })).then(res => {
+                if (res.ok) {
+                    res.json().then(res => { 
+                        setSelectedUser(res.user == null ? 'null' : res.user);
+                    });
+                } else {
+                    throw new Error(res.status)
+                };
+            });
+        } else {
+            setSelectedUser(currentUser);
+        }
     });
 
-    function updateGroups() {
-        fetchP("/api/priv/list-groups?" + new URLSearchParams({
-            "secret_token": localStorage.getItem("token")
-        })).then(res => res.json())
-        .then(res => res.groups)
-        .then(groups => {
-            setGroups(groups);
-        });
-    }
+    return ( 
+        <div id="user-profile" key={selectedUser.username}>
+            { selectedUser != 'null' ? (
+                    <>
+                        <h1>{selectedUser.username}</h1>
 
-    // get groups
-    useEffect(updateGroups);
+                        <h2>User Info</h2>
+                        <p className="profile-field"><strong>username</strong> {selectedUser.username}</p>
+                        {selectedUser.email !== undefined && <p className="profile-field"><strong>email</strong> {selectedUser.email}</p>}
+                        {selectedUser.access_level !== undefined && <p className="profile-field"><strong>access level</strong> {selectedUser.access_level}</p>}
 
-    async function createGroup(e) {
-		e.preventDefault();
-		
-		const form = e.target;
-		const group_name = form[0].value;
-
-        fetchP("/api/priv/create-group", {
-            method: "POST",
-            headers: new Headers({
-                "Authentication": localStorage.getItem("token"),
-                "Content-type": "application/x-www-form-urlencoded",
-            }),
-            body: new URLSearchParams({
-                "name": group_name,
-            })
-        }).then(res => {
-            if (res.ok) {
-                setIsAddingGroup(false);
-                updateGroups();
-            } else {
-                res.json().then(obj => {
-                    if (obj.errorString.includes("name_1 dup key:")) {
-                        setGroupErr("Group name has already been used");
-                    } else {
-                        throw new Error('group error');
-                    }
-                });
+                        <ProfileGroups user={selectedUser.username} key={selectedUser.username}/>
+                    </>
+                ) : (
+                    <>
+                        <p><i>You do not have permission to view this user.</i></p>
+                    </>
+                )
             }
-        });
-    }
-
-    useEffect(() => {
-        setGroupErr(null);
-    }, [isAddingGroup]);
-
-    return (
-        <div id="user-profile">
-            <h1>Profile</h1>
-            {groups.map(group => { 
-                return (
-                    <div className="group-panel" key={group.name}>
-                        <p>Group <i>{group.name}</i></p>
-                    </div>
-                );
-            })}
-            {
-                isAddingGroup 
-                && <form onSubmit={event => createGroup(event)}>
-                    { groupErr !== null && 
-                        <p>{groupErr}</p>
-                    }
-                    <label htmlFor="groupname-field">Group name:</label>
-                    <input type="text" id="groupname-field" />
-                    <input type="submit" />
-                </form>
-            }
-            <button id="add-group-button" onClick={() => { setIsAddingGroup(!isAddingGroup) }}>
-                {isAddingGroup ? 'Cancel' : 'Add Group'}
-            </button> 
         </div>
     );
 }

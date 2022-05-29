@@ -10,9 +10,20 @@ import Profile from './components/profile.js'
 import Dashboard from './components/dashboard.js'
 import Settings from './components/settings.js'
 import Wiki from './components/wiki.js'
+import PageNotFound from './components/notfound.js'
 
 import Register from './components/register.js'
 import ResetPassword from './components/reset-password.js'
+
+// Create history object.
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
+
+// Listen to history changes.
+// You can unlisten by calling the constant (`unlisten()`).
+const unlisten = history.listen((location, action) => {
+  console.log(action, location.pathname, location.state);
+});
 
 function App() {
     return (
@@ -22,9 +33,12 @@ function App() {
                 <Route path="/reset-password" element = { <ResetPassword /> } />
                 <Route path="/*" element={ <LoginWrapper><Outlet /></LoginWrapper> }>
                     <Route path="" element={ <Dashboard /> } />
-                    <Route path="profile" element={ <Profile /> } />
+                    <Route path="profile" element={ <Profile /> }>
+                        <Route path=":user" element={ <Profile /> } />
+                    </Route>
                     <Route path="settings" element={ <Settings /> } />
                     <Route path="wiki" element={ <Wiki /> } />
+                    <Route path="*" element={ <PageNotFound /> } />
                 </Route>
             </Routes>
         </BrowserRouter>

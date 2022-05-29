@@ -1,0 +1,31 @@
+.group-pane {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center;
+
+    width: 100%;
+    border-radius: var(--big-curve-radius);
+    background-color: var(--lite-color);
+    padding: 10px;
+    padding-bottom: 15px;
+    border-left: 1px dashed var(--main-color);
+    border-right: 1px dashed var(--main-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.group-pane .gpane-name {
+    order: 1;
+    margin: 0;
+    color: var(--main-color);
+}
+
+.group-pane .gpane-right {
+    order: 2;
+    text-align: right;
+}
+
+.gpane-users, .gpane-admins {
+    margin: 0;
+}
