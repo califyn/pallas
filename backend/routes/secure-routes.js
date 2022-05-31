@@ -93,7 +93,7 @@ router.get(
             } else if (req.query.username == undefined) {
                 var props = ["_id", "username", "email"];
             }
-            if (username == req.user.username) {
+            if (req.query.username == req.user.username) {
                 props = [...new Set(props.concat(["_id", "username", "email"]))]; 
             }
             for (var i = 0; i < props.length; i++) {
@@ -213,6 +213,43 @@ router.get(
                 message: "found group",
                 group: ret
             });
+        }
+    }
+);
+
+router.post(
+    '/group-add-user',
+    async (req, res, next) => {
+        var group = await GroupModel.findOne({name: req.body.groupname});
+        if (utils.GaccessLessThan(group, req.user, "admin")) {
+            utils.authBad(res);
+        } else {
+            var user = await UserModel.findOne({username: req.body.username});
+            if (user == undefined) {
+                res.json({
+                    message: "User not found",
+                    success: false, 
+                });
+            } else if (group.users.includes(user.id)) {
+                res.json({
+                    message: "User already in group",
+                    success: false, 
+                });
+            } else {
+                group.users.push(user.id);
+                group.save();
+
+                var msg = "You have been added to a group";
+                msg += "\n You have just been added to the group " + group.name + " by " + req.user.username + ".";
+                msg += "\n Please refer to the group page: https://pallas.athemath.org/groups/" + group.name; 
+
+                utils.mail(user.email, msg);
+
+                res.json({
+                    message: "User added to group",
+                    success: true
+                });
+            }
         }
     }
 );

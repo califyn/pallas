@@ -34,8 +34,8 @@ export default function GroupPane(props) {
                             <h2 className="gpane-name">{group.name}</h2>
                         </div>
                         <div className="gpane-right">
-                            {group.users !== undefined && <p className="gpane-users"><strong>{group.users.length}</strong> member{group.users.length != 1 && s}</p>}
-                            {group.admins !== undefined && <p className="gpane-admins"><strong>{group.admins.length}</strong> admin{group.admins.length != 1 && s}</p>}
+                            {group.users !== undefined && <p className="gpane-users"><strong>{group.users.length}</strong> member{group.users.length != 1 && <span>s</span>}</p>}
+                            {group.admins !== undefined && <p className="gpane-admins"><strong>{group.admins.length}</strong> admin{group.admins.length != 1 && <span>s</span>}</p>}
                         </div>
                     </div>
                 </div>
