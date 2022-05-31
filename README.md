@@ -1,6 +1,6 @@
 # Pallas, the Athemath internal website
 
-This is an internal website to manage logistics for [Athemath](https://athemath.org). It is hosted at https://pallas.athemath.org.
+Pallas is an internal system to manage logistics for [Athemath](https://athemath.org). The web portal is hosted at https://pallas.athemath.org.
 
 ## Overview
 
