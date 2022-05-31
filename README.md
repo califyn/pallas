@@ -1,6 +1,6 @@
 # Pallas, the Athemath internal website
 
-This is an internal website to manage logistics for [https://athemath.org](Athemath). It is hosted at https://pallas.athemath.org.
+This is an internal website to manage logistics for [Athemath](https://athemath.org). It is hosted at https://pallas.athemath.org.
 
 ## Overview
 
@@ -20,7 +20,7 @@ Student-level users and above are allowed to create **groups** with other users,
 
 #### Email integration
 
-Pallas has the ability to send automatically generated emails through the [https://developers.google.com/gmail/api](Gmail API), as Athemath email uses the GSuite.
+Pallas has the ability to send automatically generated emails through the [Gmail API](https://developers.google.com/gmail/api), as Athemath email uses the GSuite.
 
 ### Major features (to-be-implemented)
 
@@ -30,7 +30,7 @@ Tasks can be assigned to groups. Upon each member's completion of the task, grou
 
 #### Event creation
 
-Events can be created and scheduled on Pallas through a [https://www.when2meet.com](when2meet)-like interface, complete with reminder emails.
+Events can be created and scheduled on Pallas through a [when2meet](https://www.when2meet.com)-like interface, complete with reminder emails.
 
 #### Rich text
 
